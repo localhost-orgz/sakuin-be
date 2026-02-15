@@ -49,7 +49,7 @@ jobs:
           key: ${{ secrets.VPS_PRIVATE_KEY }}
           script: |
             cd ~/sakuin-be
-            export IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}
+            export IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/sakuin
             export VERSION=${{ needs.build-and-push.outputs.app_version }}
             docker compose pull
             docker compose up -d
