@@ -9,6 +9,10 @@ export class UserRepository {
     return await UserModel.findOne({ email });
   }
 
+  async findById(id: string) {
+    return await UserModel.findById(id);
+  }
+
   async create(data: User) {
     return await UserModel.create(data);
   }
