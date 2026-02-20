@@ -3,6 +3,7 @@ import cors from 'cors';
 import passport from 'passport';
 import './services/passport.service.js';
 import authRoutes from './routes/auth.routes.js';
+import categoryRoutes from './routes/category.routes.js';
 
 const app = express();
 
@@ -15,5 +16,6 @@ app.get('/health', (req, res) => {
 });
 
 app.use('/auth', authRoutes);
+app.use('/categories', categoryRoutes);
 
 export default app;
