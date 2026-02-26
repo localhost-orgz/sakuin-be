@@ -5,6 +5,7 @@ import './services/passport.service.js';
 import authRoutes from './routes/auth.routes.js';
 import categoryRoutes from './routes/category.routes.js';
 import walletRoutes from './routes/wallet.routes.js';
+import transactionRoutes from './routes/transaction.routes.js';
 
 const app = express();
 
@@ -19,5 +20,6 @@ app.get('/health', (req, res) => {
 app.use('/auth', authRoutes);
 app.use('/categories', categoryRoutes);
 app.use('/wallets', walletRoutes);
+app.use('/transaction', transactionRoutes);
 
 export default app;
