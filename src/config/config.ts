@@ -26,6 +26,11 @@ const config = {
   jwt: {
     secret_key: getEnv('JWT_SECRET_KEY'),
   },
+  cloudinary: {
+    name: getEnv('CLOUDINARY_NAME'),
+    api_key: getEnv('CLOUDINARY_API_KEY'),
+    api_secret: getEnv('CLOUDINARY_API_SECRET'),
+  },
 };
 
 export default config;

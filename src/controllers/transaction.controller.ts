@@ -1,12 +1,14 @@
 import type { Request, Response } from 'express';
 import { TransactionService } from '../services/transaction.service.js';
 import type { CreateTransactionDTO, UpdateTransactionDTO } from '../dtos/transaction.dto.js';
+import { UploadService } from '../services/upload.service.js';
 
 type TransactionParams = {
   id: string;
 };
 
 const transactionService = new TransactionService();
+const uploadService = new UploadService();
 
 export const getAllTransactionsByUser = async (req: Request, res: Response) => {
   try {
@@ -46,8 +48,20 @@ export const createTransaction = async (req: Request, res: Response) => {
     if (!userId) {
       return res.status(401).json({ status: 'error', message: 'Unauthorized' });
     }
-    const data: CreateTransactionDTO = req.body;
+
+    let attachmentUrl = '';
+
+    if (req.file) {
+      attachmentUrl = await uploadService.uploadImage(req.file);
+    }
+
+    const data: CreateTransactionDTO = {
+      ...req.body,
+      attachment_url: attachmentUrl,
+    };
+
     const newTransaction = await transactionService.createTransaction(userId, data);
+
     return res.status(201).json({
       status: 'success',
       data: newTransaction,

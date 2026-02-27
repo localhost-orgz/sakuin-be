@@ -9,6 +9,7 @@ import {
 } from '../controllers/transaction.controller.js';
 import { validate } from '../middlewares/validate.middleware.js';
 import { createTransactionSchema, updateTransactionSchema } from '../dtos/transaction.dto.js';
+import { upload } from '../middlewares/upload.middleware.js';
 
 const router = Router();
 
@@ -16,7 +17,7 @@ router.use(authMiddleware);
 
 router.get('/', getAllTransactionsByUser);
 router.get('/:id', getTransactionById);
-router.post('/', validate(createTransactionSchema), createTransaction);
+router.post('/', upload.single('attachment'), validate(createTransactionSchema), createTransaction);
 router.put('/:id', validate(updateTransactionSchema), updateTransaction);
 router.delete('/:id', deleteTransaction);
 

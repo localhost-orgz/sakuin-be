@@ -3,7 +3,7 @@ import z from 'zod';
 export const createTransactionSchema = z.object({
   category_id: z.string(),
   wallet_id: z.string(),
-  amount: z.number(),
+  amount: z.string(),
   type: z.enum(['income', 'expense']),
   description: z.string().optional(),
   date: z.coerce.date(),
