@@ -36,6 +36,7 @@ export class TransactionService {
       ...data,
       category_id: new Types.ObjectId(data.category_id),
       wallet_id: new Types.ObjectId(data.wallet_id),
+      amount: Number(data.amount),
       updatedAt: new Date(),
     };
     return await this.transactionRepo.update(id, updatedData);
