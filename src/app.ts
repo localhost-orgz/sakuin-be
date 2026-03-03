@@ -26,6 +26,6 @@ app.use('/wallets', walletRoutes);
 app.use('/transaction', transactionRoutes);
 app.use('/currencies', currencyRoutes);
 app.use('/types', typeRoutes);
-app.use('/ai', aiRoutes)
+app.use('/ai', aiRoutes);
 
 export default app;

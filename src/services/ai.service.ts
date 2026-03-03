@@ -2,22 +2,22 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { CategoryService } from './category.service.js';
 
 export class AIService {
-   private categoryService: CategoryService;
+  private categoryService: CategoryService;
 
-   constructor() {
-      this.categoryService = new CategoryService();
-   }
+  constructor() {
+    this.categoryService = new CategoryService();
+  }
 
-   private getModel(apiKey: string) {
-      const genAI = new GoogleGenerativeAI(apiKey);
-      return genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
-   }
+  private getModel(apiKey: string) {
+    const genAI = new GoogleGenerativeAI(apiKey);
+    return genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
+  }
 
-   async sakushare(imageBuffer: Buffer, userId: string) {
-      const model = this.getModel(process.env.SAKUSHARE_GEMINI_KEY!);
-      const categories = await this.categoryService.getAllCategoriesByUserId(userId);
+  async sakushare(imageBuffer: Buffer, userId: string) {
+    const model = this.getModel(process.env.SAKUSHARE_GEMINI_KEY!);
+    const categories = await this.categoryService.getAllCategoriesByUserId(userId);
 
-      const prompt = `
+    const prompt = `
          Kamu adalah asisten keuangan pribadi. Ekstrak data dari bukti transfer ke JSON:
          Daftar kategori: ${JSON.stringify(categories)}.
          
@@ -32,16 +32,16 @@ export class AIService {
          Jika tanggal tidak ada, gunakan ${new Date().toISOString().split('T')[0]}.
       `;
 
-      const result = await model.generateContent([
-         prompt,
-         { inlineData: { data: imageBuffer.toString('base64'), mimeType: 'image/png' } },
-      ]);
+    const result = await model.generateContent([
+      prompt,
+      { inlineData: { data: imageBuffer.toString('base64'), mimeType: 'image/png' } },
+    ]);
 
-      return JSON.parse(
-         result.response
-         .text()
-         .replace(/```json|```/g, '')
-         .trim(),
-      );
-   }
+    return JSON.parse(
+      result.response
+        .text()
+        .replace(/```json|```/g, '')
+        .trim(),
+    );
+  }
 }
