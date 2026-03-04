@@ -10,7 +10,7 @@ export class AIService {
 
   private getModel(apiKey: string) {
     const genAI = new GoogleGenerativeAI(apiKey);
-    return genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
+    return genAI.getGenerativeModel({ model: 'gemma-3-4b-it' });
   }
 
   async sakushare(imageBuffer: Buffer, userId: string) {
