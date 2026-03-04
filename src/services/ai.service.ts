@@ -18,18 +18,20 @@ export class AIService {
     const categories = await this.categoryService.getAllCategoriesByUserId(userId);
 
     const prompt = `
-         Kamu adalah asisten keuangan pribadi. Ekstrak data dari bukti transfer ke JSON:
-         Daftar kategori: ${JSON.stringify(categories)}.
-         
-         Format Output JSON saja:
-         {
-         "category_id": "string",
-         "amount": number,
-         "type": "expense",
-         "description": "string",
-         "date": "YYYY-MM-DD"
-         }
-         Jika tanggal tidak ada, gunakan ${new Date().toISOString().split('T')[0]}.
+        Kamu adalah asisten keuangan pribadi. Ekstrak data dari bukti transfer ke JSON:
+        Daftar kategori: ${JSON.stringify(categories)}.
+        
+        Format Output JSON saja:
+        {
+        "category_id": "string",
+        "category_name": "string",
+        "amount": number,
+        "type": "income/expense",
+        "description": "string",
+        "date": "YYYY-MM-DD"
+        }
+        Jika tanggal tidak ada, gunakan ${new Date().toISOString().split('T')[0]}.
+        Jika tujuan transfer nya belum 
       `;
 
     const result = await model.generateContent([

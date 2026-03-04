@@ -18,7 +18,7 @@ export const sakushare = async (req: Request, res: Response) => {
 
     return res.status(200).json({
       status: 'success',
-      message: 'Data berhasil diekstrak',
+      message: 'Bukti Transfer berhasil diekstrak',
       data,
     });
   } catch (error) {

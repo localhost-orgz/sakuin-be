@@ -7,6 +7,7 @@ const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 router.use(authMiddleware);
+
 // router.post('/sakunap', upload.single('receipt'), sakunap);
 // router.post('/sakuvoice', sakuvoice);
 router.post('/sakushare', upload.single('transfer'), sakushare);
