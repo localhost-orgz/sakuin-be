@@ -8,25 +8,30 @@ const categories: Partial<Category>[] = [
   {
     name: 'Makanan & Minuman',
     slug: 'makanan-minuman',
-    icon_url: 'https://res.cloudinary.com/id/icon/food.png',
+    emoticon: '🍔',
   },
   {
     name: 'Transportasi',
     slug: 'transportasi',
-    icon_url: 'https://res.cloudinary.com/id/icon/transport.png',
+    emoticon: '🚌',
   },
-  { name: 'Belanja', slug: 'belanja', icon_url: 'https://res.cloudinary.com/id/icon/shopping.png' },
+  { name: 'Belanja', slug: 'belanja', emoticon: '🛍️' },
   {
     name: 'Hiburan',
     slug: 'hiburan',
-    icon_url: 'https://res.cloudinary.com/id/icon/entertainment.png',
+    emoticon: '🎉',
   },
   {
     name: 'Kesehatan',
     slug: 'kesehatan',
-    icon_url: 'https://res.cloudinary.com/id/icon/health.png',
+    emoticon: '💊',
   },
-  { name: 'Gaji', slug: 'gaji', icon_url: 'https://res.cloudinary.com/id/icon/salary.png' },
+  { name: 'Gaji', slug: 'gaji', emoticon: '💰' },
+  {
+    name: 'Lainnya',
+    slug: 'lainnya',
+    emoticon: '📦',
+  },
 ];
 
 const seedCategories = async () => {
