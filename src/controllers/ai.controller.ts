@@ -3,6 +3,10 @@ import { AIService } from '../services/ai.service.js';
 
 const aiService = new AIService();
 
+export const sakuvoice = async (req: Request, res: Response) => {
+  
+};
+
 export const sakushare = async (req: Request, res: Response) => {
   try {
     if (!req.file) {

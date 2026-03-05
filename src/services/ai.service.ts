@@ -31,7 +31,6 @@ export class AIService {
         "date": "YYYY-MM-DD"
         }
         Jika tanggal tidak ada, gunakan ${new Date().toISOString().split('T')[0]}.
-        Jika tujuan transfer nya belum 
       `;
 
     const result = await model.generateContent([
