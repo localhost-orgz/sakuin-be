@@ -10,7 +10,43 @@ export class AIService {
 
   private getModel(apiKey: string) {
     const genAI = new GoogleGenerativeAI(apiKey);
-    return genAI.getGenerativeModel({ model: 'gemma-3-4b-it' });
+    return genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
+    // return genAI.getGenerativeModel({ model: 'gemma-3-27b-it' });
+  }
+
+  async sakuvoice(voice: string, userId: string) {
+    const model = this.getModel(process.env.SAKUVOICE_GEMINI_KEY!);
+    const categories = await this.categoryService.getAllCategoriesByUserId(userId);
+
+    const prompt = `
+      Anda adalah asisten keuangan pribadi. Ekstrak data dari teks transkripsi suara berikut.
+      Teks: "${voice}"
+
+      Daftar kategori yang tersedia: ${JSON.stringify(categories)}.
+
+      INSTRUKSI PENTING:
+      1. Hitung total amount (jumlah uang) dari SEMUA item yang disebutkan.
+      2. Jika dalam teks disebutkan nominal dalam "ribu", pastikan untuk mengubahnya menjadi angka penuh (contoh: 25 ribu menjadi 25000).
+      3. Gabungkan semua deskripsi menjadi satu kalimat deskripsi yang lengkap dan jelas.
+      4. Pilih SATU category_id dan category_name yang paling mewakili total pengeluaran tersebut.
+      5. KEMBALIKAN DALAM SATU OBJEK JSON SAJA (jangan gunakan array).
+
+      Format Output JSON:
+      {
+        "category_id": "string",
+        "category_name": "string",
+        "amount": number,
+        "type": "expense",
+        "description": "string",
+        "date": "YYYY-MM-DD"
+      }
+
+      Jika tanggal tidak disebutkan, gunakan ${new Date().toISOString().split('T')[0]}.
+      Jawab hanya dengan JSON tanpa tambahan teks apapun.
+    `;
+
+    const result = await model.generateContent(prompt);
+    return JSON.parse(result.response.text().replace(/```json|```/g, "").trim());
   }
 
   async sakushare(imageBuffer: Buffer, userId: string) {
@@ -18,20 +54,29 @@ export class AIService {
     const categories = await this.categoryService.getAllCategoriesByUserId(userId);
 
     const prompt = `
-        Kamu adalah asisten keuangan pribadi. Ekstrak data dari bukti transfer ke JSON:
-        Daftar kategori: ${JSON.stringify(categories)}.
-        
-        Format Output JSON saja:
-        {
+      Anda adalah asisten keuangan pribadi. Ekstrak data dari gambar bukti transfer berikut.
+
+      Daftar kategori yang tersedia: ${JSON.stringify(categories)}.
+
+      INSTRUKSI PENTING:
+      1. Identifikasi nominal transaksi. Jika tertulis "ribu" atau format angka singkat, ubah menjadi angka penuh (contoh: 25rb menjadi 25000).
+      2. Tentukan deskripsi transaksi yang jelas dari gambar.
+      3. Pilih SATU category_id dan category_name yang paling relevan dari daftar di atas.
+      4. KEMBALIKAN DALAM SATU OBJEK JSON SAJA (jangan gunakan array).
+
+      Format Output JSON:
+      {
         "category_id": "string",
         "category_name": "string",
         "amount": number,
-        "type": "income/expense",
+        "type": "expense",
         "description": "string",
         "date": "YYYY-MM-DD"
-        }
-        Jika tanggal tidak ada, gunakan ${new Date().toISOString().split('T')[0]}.
-      `;
+      }
+
+      Jika tanggal tidak ditemukan di gambar, gunakan ${new Date().toISOString().split('T')[0]}.
+      Jawab hanya dengan JSON tanpa tambahan teks apapun.
+    `;
 
     const result = await model.generateContent([
       prompt,
