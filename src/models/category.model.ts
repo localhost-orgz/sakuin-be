@@ -3,7 +3,7 @@ import { model, Schema, type HydratedDocument, type InferSchemaType } from 'mong
 const schema = new Schema({
   name: { type: String, required: true },
   slug: { type: String, required: true, unique: true },
-  icon_url: { type: String, required: true },
+  emoticon: { type: String, required: false, default: null },
   user_id: { type: Schema.Types.ObjectId, ref: 'User', required: false, default: null },
 });
 
