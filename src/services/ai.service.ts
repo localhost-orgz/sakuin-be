@@ -46,7 +46,12 @@ export class AIService {
     `;
 
     const result = await model.generateContent(prompt);
-    return JSON.parse(result.response.text().replace(/```json|```/g, "").trim());
+    return JSON.parse(
+      result.response
+        .text()
+        .replace(/```json|```/g, '')
+        .trim(),
+    );
   }
 
   async sakushare(imageBuffer: Buffer, userId: string) {
