@@ -3,7 +3,7 @@ import z from 'zod';
 //! zod docs: https://zod.dev/basics
 export const createCategorySchema = z.object({
   name: z.string(),
-  icon_url: z.url(),
+  emoticon: z.string(),
 });
 
 export const updateCategorySchema = createCategorySchema.partial();
