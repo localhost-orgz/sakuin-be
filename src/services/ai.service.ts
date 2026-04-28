@@ -14,6 +14,53 @@ export class AIService {
     // return genAI.getGenerativeModel({ model: 'gemma-3-27b-it' });
   }
 
+  async sakusnap(imageBuffer: Buffer, userId: string) {
+    const model = this.getModel(process.env.SAKUSNAP_GEMINI_KEY!);
+    const categories = await this.categoryService.getAllCategoriesByUserId(userId);
+  
+    const prompt = `
+      Anda adalah asisten keuangan pribadi. Ekstrak data detail dari gambar struk belanja berikut.
+      
+      Daftar kategori yang tersedia: ${JSON.stringify(categories)}.
+
+      INSTRUKSI PENTING:
+      1. Ekstrak setiap barang yang dibeli ke dalam array 'items'.
+      2. Untuk setiap barang, tentukan nama barang, kuantitas, harga satuan, dan harga totalnya dalam angka penuh (contoh: 5rb menjadi 5000).
+      3. Hitung total nominal akhir (amount) dari seluruh struk.
+      4. Pilih SATU category_id dan category_name yang paling mewakili jenis belanjaan ini secara umum.
+      5. KEMBALIKAN DALAM FORMAT JSON BERIKUT.
+
+      Format Output JSON:
+      {
+        "category_id": "string",
+        "category_name": "string",
+        "amount": number,
+        "type": "expense",
+        "description": "string (ringkasan singkat belanjaan)",
+        "date": "YYYY-MM-DD",
+        "items": [
+          {
+            "name": "string (nama barang)",
+            "quantity": "number (kuantitas barang)",
+            "price": number (harga satuan barang)
+            "total": number (harga total barang)
+          }
+        ]
+      }
+
+      Jika tanggal tidak ditemukan, gunakan ${new Date().toISOString().split('T')[0]}.
+      Jawab hanya dengan JSON tanpa tambahan teks apapun.
+    `;
+  
+    const result = await model.generateContent([
+      prompt,
+      { inlineData: { data: imageBuffer.toString("base64"), mimeType: "image/png" } }
+    ]);
+  
+    const cleanedText = result.response.text().replace(/```json|```/g, "").trim();
+    return JSON.parse(cleanedText);
+  }
+
   async sakuvoice(voice: string, userId: string) {
     const model = this.getModel(process.env.SAKUVOICE_GEMINI_KEY!);
     const categories = await this.categoryService.getAllCategoriesByUserId(userId);
