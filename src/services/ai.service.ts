@@ -41,7 +41,9 @@ export class AIService {
         "date": "YYYY-MM-DD"
       }
 
-      Jika tanggal tidak disebutkan, gunakan ${new Date().toISOString().split('T')[0]}.
+      Jika tanggal tidak disebutkan, gunakan ${new Date().toISOString().split('T')[0]}, 
+      jika disebut {sekian} hari lalu, gunakan dari ${new Date().toISOString().split('T')[0]} dikurangi {sekian} teresebut.
+
       Jawab hanya dengan JSON tanpa tambahan teks apapun.
     `;
 
