@@ -18,7 +18,7 @@ const router = Router();
 
 router.get('/google', (req, res, next) => {
   const { redirect_uri } = req.query;
-  
+
   const state = redirect_uri 
     ? Buffer.from(JSON.stringify({ redirect_uri })).toString('base64') 
     : undefined;
@@ -40,7 +40,7 @@ router.get('/google/callback', passport.authenticate('google', { session: false 
   let finalRedirectUrl = config.app.frontend_url;
 
   const stateQuery = req.query.state;
-  
+
   if (stateQuery && typeof stateQuery === 'string') {
     try {
       const stateData = JSON.parse(Buffer.from(stateQuery, 'base64').toString());
