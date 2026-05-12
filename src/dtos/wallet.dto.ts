@@ -5,7 +5,6 @@ export const createWalletSchema = z.object({
   color: z.string(),
   balance: z.number().default(0),
   currency_id: z.string(),
-  // type_id: z.string(),
 });
 
 export const updateWalletSchema = createWalletSchema.partial();

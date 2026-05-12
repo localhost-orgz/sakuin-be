@@ -24,20 +24,16 @@ export class WalletService {
       ...data,
       user_id: new Types.ObjectId(userId),
       currency_id: new Types.ObjectId(data.currency_id),
-      type_id: new Types.ObjectId(data.type_id),
       wallet_id: uuid(),
     };
     return this.walletRepository.create(walletData);
   }
 
   async updateWallet(walletId: string, data: updateWalletDTO) {
-    const { currency_id, type_id, ...rest } = data;
+    const { currency_id, ...rest } = data;
     const updateData: Partial<Wallet> = { ...rest };
     if (currency_id != null) {
       updateData.currency_id = new Types.ObjectId(currency_id);
-    }
-    if (type_id != null) {
-      updateData.type_id = new Types.ObjectId(type_id);
     }
     return this.walletRepository.update(walletId, updateData);
   }
