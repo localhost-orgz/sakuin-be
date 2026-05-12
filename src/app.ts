@@ -8,6 +8,7 @@ import walletRoutes from './routes/wallet.routes.js';
 import transactionRoutes from './routes/transaction.routes.js';
 import currencyRoutes from './routes/currency.routes.js';
 import typeRoutes from './routes/type.routes.js';
+import goalRoutes from './routes/goal.routes.js';
 import aiRoutes from './routes/ai.routes.js';
 
 const app = express();
@@ -26,6 +27,7 @@ app.use('/wallets', walletRoutes);
 app.use('/transaction', transactionRoutes);
 app.use('/currencies', currencyRoutes);
 app.use('/types', typeRoutes);
+app.use('/goals', goalRoutes);
 app.use('/ai', aiRoutes);
 
 export default app;
