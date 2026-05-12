@@ -12,7 +12,8 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "tsx watch src/index.ts",
-    "seed:category": "tsx src/seeders/category.seeder.ts"
+    "seed:category": "tsx src/seeders/category.seeder.ts",
+    "seed:currency": "tsx src/seeders/currency.seeder.ts"
   },
   "keywords": [],
   "author": "",
