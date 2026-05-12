@@ -10,7 +10,9 @@ export class GoalRepository {
     if (!Types.ObjectId.isValid(goalId)) {
       return null;
     }
-    return await GoalModel.findOne({ _id: goalId, user_id: userId }).populate('currency_id');
+    return await GoalModel.findOne({ _id: goalId, user_id: userId })
+      .populate('currency_id')
+      .populate('goal_histories');
   }
 
   async create(data: Goal) {

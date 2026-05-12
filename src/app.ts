@@ -9,6 +9,7 @@ import transactionRoutes from './routes/transaction.routes.js';
 import currencyRoutes from './routes/currency.routes.js';
 import typeRoutes from './routes/type.routes.js';
 import goalRoutes from './routes/goal.routes.js';
+import goalHistoryRoutes from './routes/goal-history.routes.js';
 import aiRoutes from './routes/ai.routes.js';
 
 const app = express();
@@ -28,6 +29,7 @@ app.use('/transaction', transactionRoutes);
 app.use('/currencies', currencyRoutes);
 app.use('/types', typeRoutes);
 app.use('/goals', goalRoutes);
+app.use('/goal-histories', goalHistoryRoutes);
 app.use('/ai', aiRoutes);
 
 export default app;

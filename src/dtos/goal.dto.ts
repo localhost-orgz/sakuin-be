@@ -3,6 +3,7 @@ import z from 'zod';
 export const createGoalSchema = z.object({
   name: z.string(),
   color: z.string(),
+  current_amount: z.number().default(0),
   target_amount: z.number().default(0),
   emoji: z.string().default(''),
   currency_id: z.string(),
