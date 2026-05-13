@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import config from '../config/config.js';
 import type { UserDocument } from '../models/user.model.js';
 import { authMiddleware } from '../middlewares/auth.middleware.js';
-import { getProfile } from '../controllers/user.controller.js';
+import { getProfile, updateProfile } from '../controllers/user.controller.js';
 
 const router = Router();
 
@@ -57,5 +57,6 @@ router.get('/google/callback', passport.authenticate('google', { session: false 
 });
 
 router.get('/profile', authMiddleware, getProfile);
+router.put('/profile', authMiddleware, updateProfile);
 
 export default router;

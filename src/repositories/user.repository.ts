@@ -16,4 +16,8 @@ export class UserRepository {
   async create(data: User) {
     return await UserModel.create(data);
   }
+
+  async update(id: string, data: Partial<User>) {
+    return await UserModel.findByIdAndUpdate(id, data, { new: true });
+  }
 }
