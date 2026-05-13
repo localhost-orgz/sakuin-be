@@ -11,6 +11,7 @@ const transactionSchema = new Schema(
       enum: ['income', 'expense'],
       required: true,
     },
+    name: { type: String },
     description: { type: String },
     date: { type: Date, required: true },
     input_method: {

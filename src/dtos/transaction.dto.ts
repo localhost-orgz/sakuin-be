@@ -5,6 +5,7 @@ export const createTransactionSchema = z.object({
   wallet_id: z.string(),
   amount: z.string(),
   type: z.enum(['income', 'expense']),
+  name: z.string(),
   description: z.string().optional(),
   date: z.coerce.date(),
   input_method: z.enum(['manual', 'sakusnap', 'sakutalk', 'sakushare']),

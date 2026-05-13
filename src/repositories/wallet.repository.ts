@@ -1,3 +1,4 @@
+import { TransactionModel } from '../models/transaction.model.js';
 import { WalletModel, type Wallet } from '../models/wallet.model.js';
 
 export class WalletRepository {
@@ -6,7 +7,13 @@ export class WalletRepository {
   }
 
   async findByWalletId(walletId: string) {
-    return await WalletModel.findOne({ wallet_id: walletId });
+    const wallet = await WalletModel.findOne({ _id: walletId }).populate('currency_id').lean();
+    const transactions = await TransactionModel.find({ wallet_id: wallet?._id }).lean();
+
+    return {
+      ...wallet,
+      transactions
+    };
   }
 
   async create(data: Wallet) {
@@ -14,12 +21,12 @@ export class WalletRepository {
   }
 
   async update(walletId: string, data: Partial<Wallet>) {
-    return await WalletModel.findOneAndUpdate({ wallet_id: walletId }, data, {
+    return await WalletModel.findOneAndUpdate({ _id: walletId }, data, {
       returnDocument: 'after',
     });
   }
 
   async delete(walletId: string) {
-    return await WalletModel.findOneAndDelete({ wallet_id: walletId });
+    return await WalletModel.findOneAndDelete({ _id: walletId });
   }
 }
