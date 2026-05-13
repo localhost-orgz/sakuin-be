@@ -2,6 +2,7 @@ import { TransactionModel } from '../models/transaction.model.js';
 import { WalletModel, type Wallet } from '../models/wallet.model.js';
 
 export class WalletRepository {
+  static updateBalance: any;
   async findAllByUserId(userId: string) {
     return await WalletModel.find({ user_id: userId });
   }
@@ -28,5 +29,13 @@ export class WalletRepository {
 
   async delete(walletId: string) {
     return await WalletModel.findOneAndDelete({ _id: walletId });
+  }
+
+  async updateBalance(walletId: string, amountChange: number) {
+    return await WalletModel.findByIdAndUpdate(
+      walletId,
+      { $inc: { balance: amountChange } },
+      { new: true }
+    );
   }
 }

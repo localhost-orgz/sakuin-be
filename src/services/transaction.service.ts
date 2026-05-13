@@ -1,12 +1,15 @@
 import { TransactionRepository } from '../repositories/transaction.repository.js';
 import type { CreateTransactionDTO, UpdateTransactionDTO } from '../dtos/transaction.dto.js';
+import { WalletRepository } from '../repositories/wallet.repository.js';
 import { Types } from 'mongoose';
 
 export class TransactionService {
   private transactionRepo: TransactionRepository;
+  private walletRepo: WalletRepository;
 
   constructor() {
     this.transactionRepo = new TransactionRepository();
+    this.walletRepo = new WalletRepository();
   }
 
   async getAllTransactionsByUserId(userId: string) {
@@ -19,7 +22,7 @@ export class TransactionService {
 
   async createTransaction(userId: string, data: CreateTransactionDTO) {
     const now = new Date();
-    const transactionData = {
+    const transactionData = await this.transactionRepo.create({
       ...data,
       user_id: new Types.ObjectId(userId),
       category_id: new Types.ObjectId(data.category_id),
@@ -27,8 +30,11 @@ export class TransactionService {
       amount: Number(data.amount),
       createdAt: now,
       updatedAt: now,
-    };
-    return await this.transactionRepo.create(transactionData);
+    });
+
+    await this.walletRepo.updateBalance(data.wallet_id, -data.amount);
+
+    return transactionData;
   }
 
   async updateTransaction(id: string, data: UpdateTransactionDTO) {
