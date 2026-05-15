@@ -4,7 +4,21 @@ import { WalletModel, type Wallet } from '../models/wallet.model.js';
 export class WalletRepository {
   static updateBalance: any;
   async findAllByUserId(userId: string) {
-    return await WalletModel.find({ user_id: userId });
+    const wallets = await WalletModel.find({ user_id: userId }).populate('currency_id').lean();
+    
+    const walletsWithTransactions = await Promise.all(
+      wallets.map(async (wallet) => {
+        const transactions = await TransactionModel.find({ wallet_id: wallet._id })
+          .sort({ date: -1, createdAt: -1 })
+          .lean();
+        return {
+          ...wallet,
+          transactions,
+        };
+      })
+    );
+
+    return walletsWithTransactions;
   }
 
   async findByWalletId(walletId: string) {
