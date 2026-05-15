@@ -9,7 +9,7 @@ export class WalletRepository {
 
   async findByWalletId(walletId: string) {
     const wallet = await WalletModel.findOne({ _id: walletId }).populate('currency_id').lean();
-    const transactions = await TransactionModel.find({ wallet_id: wallet?._id }).lean();
+    const transactions = await TransactionModel.find({ wallet_id: wallet?._id }).sort({ date: -1 });
 
     return {
       ...wallet,
