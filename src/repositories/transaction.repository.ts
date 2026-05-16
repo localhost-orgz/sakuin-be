@@ -4,7 +4,9 @@ export class TransactionRepository {
   async findAllByUserId(userId: string) {
     return await TransactionModel.find({
       user_id: userId,
-    });
+    })
+    .sort({ date: -1, createdAt: -1 })
+    .lean();
   }
 
   async findById(id: string) {
