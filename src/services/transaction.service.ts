@@ -32,7 +32,8 @@ export class TransactionService {
       updatedAt: now,
     });
 
-    await this.walletRepo.updateBalance(data.wallet_id, -data.amount);
+    const balanceAdjustment = data.type === 'income' ? Number(data.amount) : -Number(data.amount);
+    await this.walletRepo.updateBalance(data.wallet_id, balanceAdjustment);
 
     return transactionData;
   }
