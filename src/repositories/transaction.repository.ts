@@ -6,6 +6,7 @@ export class TransactionRepository {
       user_id: userId,
     })
     .populate('category_id')
+    .populate('wallet_id')
     .sort({ date: -1, createdAt: -1 })
     .lean();
   }
