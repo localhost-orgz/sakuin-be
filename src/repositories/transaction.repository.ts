@@ -5,6 +5,7 @@ export class TransactionRepository {
     return await TransactionModel.find({
       user_id: userId,
     })
+    .populate('category_id')
     .sort({ date: -1, createdAt: -1 })
     .lean();
   }
