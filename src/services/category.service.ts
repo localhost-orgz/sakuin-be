@@ -26,11 +26,27 @@ export class CategoryService {
     return await this.categoryRepo.create({ ...data, slug });
   }
 
-  async updateCategory(slug: string, data: updateCategoryDTO) {
+  async updateCategory(slug: string, userId: string, data: updateCategoryDTO) {
+    const existingCategory = await this.categoryRepo.findBySlug(slug);
+    
+    if (!existingCategory) {
+      throw new Error('Category not found');
+    }
+  
     const updatedData: UpdateCategoryWithSlug = { ...data };
     if (data.name) {
       updatedData.slug = generateSlug(data.name);
     }
+  
+    if (existingCategory.user_id === null) {
+      return await this.categoryRepo.create({
+        name: data.name ?? existingCategory.name,
+        emoticon: data.emoticon !== undefined ? data.emoticon : existingCategory.emoticon,
+        slug: updatedData.slug ?? existingCategory.slug,
+        user_id: userId as any
+      });
+    }
+  
     return await this.categoryRepo.update(slug, updatedData);
   }
 
