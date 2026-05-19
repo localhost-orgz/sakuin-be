@@ -6,8 +6,6 @@ import type { UserDocument } from '../models/user.model.js';
 import { authMiddleware } from '../middlewares/auth.middleware.js';
 import { getProfile, updateProfile } from '../controllers/user.controller.js';
 
-const userController = new UserController()
-
 const router = Router();
 
 router.get('/google', (req, res, next) => {

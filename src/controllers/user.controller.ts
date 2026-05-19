@@ -21,7 +21,7 @@ export const updateProfile = async (req: Request, res: Response) => {
 
     const updatedUser = await userService.updateUserService(user._id.toString(), {
       name,
-      avatar_url
+      avatar_url,
     });
 
     res.status(200).json({
