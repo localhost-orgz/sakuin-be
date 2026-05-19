@@ -13,6 +13,8 @@ export class UserService {
   async getProfileWithFinancials(user: any) {
     const userId = user._id.toString();
 
+    const userPlainObject = typeof user.toObject === 'function' ? user.toObject() : user;
+
     const now = new Date();
     
     const startOfCurrentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -33,7 +35,7 @@ export class UserService {
     const expensePercentage = calculatePercentage(currentMonthData.expense, lastMonthData.expense);
 
     return {
-      ...user,
+      ...userPlainObject,
       financialSummary: {
         currentMonth: {
           income: currentMonthData.income,
