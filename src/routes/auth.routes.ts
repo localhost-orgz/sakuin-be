@@ -8,14 +8,6 @@ import { getProfile, updateProfile } from '../controllers/user.controller.js';
 
 const router = Router();
 
-// router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-// router.get('/google/callback', passport.authenticate('google', { session: false }), (req, res) => {
-//   const user = req.user as UserDocument;
-//   const token = jwt.sign({ userId: user._id }, config.jwt.secret_key, { expiresIn: '7d' });
-//   res.redirect(`${config.app.frontend_url}?token=${token}`);
-// });
-
 router.get('/google', (req, res, next) => {
   const { redirect_uri } = req.query;
 
@@ -36,9 +28,7 @@ router.get('/google/callback', passport.authenticate('google', { session: false 
 
   const user = req.user as UserDocument;
   const token = jwt.sign({ userId: user._id }, config.jwt.secret_key, { expiresIn: '7d' });
-
   let finalRedirectUrl = config.app.frontend_url;
-
   const stateQuery = req.query.state;
 
   if (stateQuery && typeof stateQuery === 'string') {

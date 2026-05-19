@@ -60,12 +60,7 @@ export const updateCategory = async (req: Request<Params>, res: Response) => {
   try {
     const { slug } = req.params;
     const updates = req.body;
-    const userId = req.user?._id?.toString() || req.user?.id?.toString();
-    if (!userId) {
-      return res.status(401).json({ status: 'error', message: 'Unauthorized' });
-    }
-
-    const updatedCategory = await categoryService.updateCategory(slug, userId, updates);
+    const updatedCategory = await categoryService.updateCategory(slug, updates);
     if (!updatedCategory) {
       return res.status(404).json({ status: 'error', message: 'Category not found' });
     }

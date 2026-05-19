@@ -2,9 +2,7 @@ import { CategoryModel, type Category } from '../models/category.model.js';
 
 export class CategoryRepository {
   async findAllByUserId(userId: string) {
-    return await CategoryModel.find({
-      $or: [{ user_id: null }, { user_id: userId }],
-    });
+    return await CategoryModel.find({ user_id: userId });
   }
 
   async findBySlug(slug: string) {

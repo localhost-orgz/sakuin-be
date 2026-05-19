@@ -1,54 +1,67 @@
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-import { CategoryModel, type Category } from '../models/category.model.js';
+import { UserModel } from '../models/user.model.js';
+import { CategoryModel } from '../models/category.model.js';
+import { generateSlug } from '../utils/slug.js';
 
-dotenv.config();
-
-const categories: Partial<Category>[] = [
-  {
-    name: 'Makanan & Minuman',
-    slug: 'makanan-minuman',
-    emoticon: '🍔',
-  },
-  {
-    name: 'Transportasi',
-    slug: 'transportasi',
-    emoticon: '🚌',
-  },
-  { name: 'Belanja', slug: 'belanja', emoticon: '🛍️' },
-  {
-    name: 'Hiburan',
-    slug: 'hiburan',
-    emoticon: '🎉',
-  },
-  {
-    name: 'Kesehatan',
-    slug: 'kesehatan',
-    emoticon: '💊',
-  },
-  { name: 'Gaji', slug: 'gaji', emoticon: '💰' },
-  {
-    name: 'Lainnya',
-    slug: 'lainnya',
-    emoticon: '📦',
-  },
+export const DEFAULT_CATEGORIES = [
+  { name: 'Makanan & Minuman', emoticon: '🍔' },
+  { name: 'Transportasi', emoticon: '🚗' },
+  { name: 'Belanja', emoticon: '🛍️' },
+  { name: 'Kesehatan', emoticon: '🏥' },
+  { name: 'Gaji', emoticon: '💰' },
+  { name: 'Lainnya', emoticon: '📦' },
 ];
 
-const seedCategories = async () => {
+const runMigration = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI!);
-    console.log('Menghubungkan ke database untuk seeding...');
+    if (mongoose.connection.readyState === 0) {
+      console.log('Menghubungkan ke database...');
+      await mongoose.connect(process.env.MONGO_URI!);
+    }
 
-    await CategoryModel.deleteMany({ user_id: null });
+    console.log('Menghapus semua kategori lama...');
+    const deleteResult = await CategoryModel.deleteMany({});
+    console.log(`Berhasil menghapus ${deleteResult.deletedCount} kategori lama.`);
 
-    await CategoryModel.insertMany(categories);
+    console.log('Mengambil data semua user...');
+    const users = await UserModel.find({});
+    console.log(`Ditemukan ${users.length} user.`);
 
-    console.log('Seeding Category Berhasil!');
-    process.exit();
+    if (users.length === 0) {
+      console.log('Tidak ada user yang ditemukan. Migrasi selesai.');
+      return;
+    }
+
+    let totalCreated = 0;
+    for (const user of users) {
+      const userIdStr = user._id.toString();
+      console.log(`Mengenerate kategori untuk user: ${user.name} (${userIdStr})`);
+
+      for (const defaultCat of DEFAULT_CATEGORIES) {
+        const slugBase = generateSlug(defaultCat.name);
+        const uniqueSlug = `${slugBase}-${userIdStr.substring(18)}`;
+
+        await CategoryModel.create({
+          name: defaultCat.name,
+          slug: uniqueSlug,
+          emoticon: defaultCat.emoticon,
+          user_id: user._id,
+        });
+        totalCreated++;
+      }
+    }
+
+    console.log(`\n=========================================`);
+    console.log(`Migrasi Berhasil!`);
+    console.log(`Total ${totalCreated} kategori baru telah dibuat untuk ${users.length} user.`);
+    console.log(`=========================================`);
+
   } catch (error) {
-    console.error('Seeding Gagal:', error);
-    process.exit(1);
+    console.error('Terjadi kesalahan saat menjalankan migrasi:', error);
+  } finally {
+    await mongoose.disconnect();
+    console.log('Koneksi database ditutup.');
   }
 };
 
-seedCategories();
+runMigration();
