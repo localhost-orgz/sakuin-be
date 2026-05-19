@@ -10,7 +10,7 @@ export const getProfile = async (req: Request, res: Response) => {
 
   res.status(200).json({
     status: 'success',
-    data: user,
+    data: profileData,
   });
 };
 
