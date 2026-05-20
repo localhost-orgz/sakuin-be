@@ -6,6 +6,7 @@ const schema = new Schema({
   email: { type: String, required: true, unique: true },
   google_id: { type: String, required: true, unique: true },
   avatar_url: { type: String },
+  default_currency: { type: String, default: 'IDR', uppercase: true },
   created_at: { type: Date, default: Date.now() },
 });
 

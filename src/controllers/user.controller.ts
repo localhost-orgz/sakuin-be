@@ -17,11 +17,12 @@ export const getProfile = async (req: Request, res: Response) => {
 export const updateProfile = async (req: Request, res: Response) => {
   try {
     const user = req.user as UserDocument;
-    const { name, avatar_url } = req.body;
+    const { name, avatar_url, default_currency } = req.body;
 
     const updatedUser = await userService.updateUserService(user._id.toString(), {
       name,
       avatar_url,
+      default_currency
     });
 
     res.status(200).json({
