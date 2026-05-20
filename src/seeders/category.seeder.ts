@@ -7,12 +7,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const DEFAULT_CATEGORIES = [
-  { name: 'Makanan & Minuman', emoticon: '🍔', color: '#FF5733' },
-  { name: 'Transportasi', emoticon: '🚗', color: '#33A2FF' },
-  { name: 'Belanja', emoticon: '🛍️', color: '#E133FF' },
-  { name: 'Kesehatan', emoticon: '🏥', color: '#33FF57' },
-  { name: 'Gaji', emoticon: '💰', color: '#2ECC71' },
-  { name: 'Lainnya', emoticon: '📦', color: '#95A5A6' },
+  { name: 'Makanan & Minuman', emoticon: '🍔', color: 'ocean' },
+  { name: 'Transportasi', emoticon: '🚗', color: 'forest' },
+  { name: 'Belanja', emoticon: '🛍️', color: 'ember' },
+  { name: 'Kesehatan', emoticon: '🏥', color: 'violet' },
+  { name: 'Gaji', emoticon: '💰', color: 'indigo' },
+  { name: 'Lainnya', emoticon: '📦', color: 'rose' },
 ];
 
 const runMigration = async () => {
