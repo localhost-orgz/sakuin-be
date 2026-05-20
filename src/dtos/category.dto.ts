@@ -4,6 +4,7 @@ import z from 'zod';
 export const createCategorySchema = z.object({
   name: z.string(),
   emoticon: z.string(),
+  color: z.string(),
 });
 
 export const updateCategorySchema = createCategorySchema.partial();

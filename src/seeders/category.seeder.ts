@@ -2,14 +2,17 @@ import mongoose from 'mongoose';
 import { UserModel } from '../models/user.model.js';
 import { CategoryModel } from '../models/category.model.js';
 import { generateSlug } from '../utils/slug.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export const DEFAULT_CATEGORIES = [
-  { name: 'Makanan & Minuman', emoticon: '🍔' },
-  { name: 'Transportasi', emoticon: '🚗' },
-  { name: 'Belanja', emoticon: '🛍️' },
-  { name: 'Kesehatan', emoticon: '🏥' },
-  { name: 'Gaji', emoticon: '💰' },
-  { name: 'Lainnya', emoticon: '📦' },
+  { name: 'Makanan & Minuman', emoticon: '🍔', color: '#FF5733' },
+  { name: 'Transportasi', emoticon: '🚗', color: '#33A2FF' },
+  { name: 'Belanja', emoticon: '🛍️', color: '#E133FF' },
+  { name: 'Kesehatan', emoticon: '🏥', color: '#33FF57' },
+  { name: 'Gaji', emoticon: '💰', color: '#2ECC71' },
+  { name: 'Lainnya', emoticon: '📦', color: '#95A5A6' },
 ];
 
 const runMigration = async () => {
@@ -45,6 +48,7 @@ const runMigration = async () => {
           name: defaultCat.name,
           slug: uniqueSlug,
           emoticon: defaultCat.emoticon,
+          color: defaultCat.color,
           user_id: user._id,
         });
         totalCreated++;
