@@ -1,4 +1,5 @@
 import { TransactionModel, type Transaction } from '../models/transaction.model.js';
+import mongoose from 'mongoose';
 
 export class TransactionRepository {
   async findAllByUserId(userId: string) {
@@ -31,7 +32,7 @@ export class TransactionRepository {
     const result = await TransactionModel.aggregate([
       {
         $match: {
-          user_id: userId,
+          user_id: new mongoose.Types.ObjectId(userId),
           date: { $gte: startDate, $lte: endDate }
         }
       },
