@@ -21,15 +21,20 @@ export class CategoryService {
     return await this.categoryRepo.findBySlug(slug);
   }
 
-  async createCategory(data: createCategoryDTO) {
-    const slug = generateSlug(data.name);
+  async createCategory(data: createCategoryDTO, userId: string) {
+    const baseSlug = generateSlug(data.name);
+    const userSuffix = userId.toString().slice(-6);
+    const slug = `${baseSlug}-${userSuffix}`;
+    
     return await this.categoryRepo.create({ ...data, slug });
   }
 
-  async updateCategory(slug: string, data: updateCategoryDTO) {
+  async updateCategory(slug: string, data: updateCategoryDTO, userId: string) {
     const updatedData: UpdateCategoryWithSlug = { ...data };
     if (data.name) {
-      updatedData.slug = generateSlug(data.name);
+      const baseSlug = generateSlug(data.name);
+      const userSuffix = userId.toString().slice(-6);
+      updatedData.slug = `${baseSlug}-${userSuffix}`;
     }
     return await this.categoryRepo.update(slug, updatedData);
   }

@@ -46,7 +46,7 @@ export const createCategory = async (req: Request, res: Response) => {
       return res.status(401).json({ status: 'error', message: 'Unauthorized' });
     }
     const data = { ...req.body, user_id: userId };
-    const newCategory = await categoryService.createCategory(data);
+    const newCategory = await categoryService.createCategory(data, userId);
     return res.status(201).json({
       status: 'success',
       data: newCategory,
@@ -60,7 +60,11 @@ export const updateCategory = async (req: Request<Params>, res: Response) => {
   try {
     const { slug } = req.params;
     const updates = req.body;
-    const updatedCategory = await categoryService.updateCategory(slug, updates);
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ status: 'error', message: 'Unauthorized' });
+    }
+    const updatedCategory = await categoryService.updateCategory(slug, updates, userId);
     if (!updatedCategory) {
       return res.status(404).json({ status: 'error', message: 'Category not found' });
     }
