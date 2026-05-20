@@ -7,8 +7,9 @@ export const createTransactionSchema = z.object({
   type: z.enum(['income', 'expense', 'transfer']),
   name: z.string(),
   description: z.string().optional(),
+  target_wallet_id: z.string().optional(),
   date: z.coerce.date(),
-  input_method: z.enum(['manual', 'sakusnap', 'sakutalk', 'sakushare']),
+  input_method: z.enum(['manual', 'sakusnap', 'sakuvoice', 'sakushare']),
   attachment_url: z.url().optional(),
 });
 

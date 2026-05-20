@@ -22,6 +22,7 @@ export class TransactionService {
 
   async createTransaction(userId: string, data: CreateTransactionDTO) {
     const now = new Date();
+    
     const transactionData = await this.transactionRepo.create({
       ...data,
       user_id: new Types.ObjectId(userId),
@@ -31,10 +32,18 @@ export class TransactionService {
       createdAt: now,
       updatedAt: now,
     });
-
-    const balanceAdjustment = data.type === 'income' ? Number(data.amount) : -Number(data.amount);
-    await this.walletRepo.updateBalance(data.wallet_id, balanceAdjustment);
-
+  
+    if (data.type === 'transfer') {
+      await this.walletRepo.updateBalance(data.wallet_id, -Number(data.amount));
+      
+      if (data.target_wallet_id) {
+        await this.walletRepo.updateBalance(data.target_wallet_id, Number(data.amount));
+      }
+    } else {
+      const balanceAdjustment = data.type === 'income' ? Number(data.amount) : -Number(data.amount);
+      await this.walletRepo.updateBalance(data.wallet_id, balanceAdjustment);
+    }
+  
     return transactionData;
   }
 
