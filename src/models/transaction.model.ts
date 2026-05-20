@@ -8,7 +8,7 @@ const transactionSchema = new Schema(
     amount: { type: Number, required: true },
     type: {
       type: String,
-      enum: ['income', 'expense'],
+      enum: ['income', 'expense', 'transfer'],
       required: true,
     },
     name: { type: String },
@@ -16,7 +16,7 @@ const transactionSchema = new Schema(
     date: { type: Date, required: true },
     input_method: {
       type: String,
-      enum: ['manual', 'sakusnap', 'sakutalk', 'sakushare'],
+      enum: ['manual', 'sakusnap', 'sakuvoice', 'sakushare'],
       required: true,
     },
     attachment_url: { type: String },
