@@ -9,7 +9,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 router.use(authMiddleware);
 
 router.post('/sakusnap', upload.single('receipt'), sakusnap);
-router.post('/sakuvoice', sakuvoice);
+router.post('/sakuvoice', upload.single('voice'), sakuvoice);
 router.post('/sakushare', upload.single('transfer'), sakushare);
 
 export default router;

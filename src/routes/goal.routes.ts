@@ -17,7 +17,7 @@ router.use(authMiddleware);
 router.get('/', getAllGoalsByUser);
 router.get('/:uuid', getGoalByGoalId);
 router.post('/', validate(createGoalSchema), createGoal);
-router.put('/:uuid', validate(updateGoalSchema), updateGoal);
+router.put('/:uuid', validate(updateGoalSchema), updateGoal); 
 router.delete('/:uuid', deleteGoal);
 
 export default router;

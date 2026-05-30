@@ -84,6 +84,7 @@ export class AIService {
         "category_name": "string",
         "amount": number,
         "type": "expense",
+        "name": "string"
         "description": "string",
         "date": "YYYY-MM-DD"
       }
@@ -143,5 +144,23 @@ export class AIService {
         .replace(/```json|```/g, '')
         .trim(),
     );
+  }
+
+  async processAudioToText(audioBuffer: Buffer): Promise<string> {
+    const model = this.getModel(process.env.SAKUVOICE_GEMINI_KEY!);
+  
+    const prompt = "Tolong convert audio berikut ke dalam teks lengkap dan akurat. Response nya adalah langsung hasil Speech-to-Text nya";
+  
+    const result = await model.generateContent([
+      prompt,
+      {
+        inlineData: {
+          data: audioBuffer.toString("base64"),
+          mimeType: "audio/mp3"
+        }
+      }
+    ]);
+  
+    return result.response.text();
   }
 }

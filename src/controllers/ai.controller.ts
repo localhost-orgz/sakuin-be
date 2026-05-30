@@ -32,9 +32,12 @@ export const sakusnap = async (req: Request, res: Response) => {
 
 export const sakuvoice = async (req: Request, res: Response) => {
   try {
-    const { voice } = req.body;
-    if (!voice) {
-      return res.status(400).json({ status: 'error', message: 'Voice wajib diisi.' });
+    if (!req.file) {
+      return res.status(400).json({ status: 'error', message: 'File audio MP3 wajib diunggah.' });
+    }
+
+    if (!req.file.mimetype.startsWith('audio/')) {
+      return res.status(400).json({ status: 'error', message: 'File yang diunggah harus berupa audio (MP3/WAV/dll).' });
     }
 
     const userId = req.user?.id;
@@ -42,7 +45,9 @@ export const sakuvoice = async (req: Request, res: Response) => {
       return res.status(401).json({ status: 'error', message: 'Unauthorized' });
     }
 
-    const data = await aiService.sakuvoice(voice, userId);
+    const textResponse = await aiService.processAudioToText(req.file.buffer);
+
+    const data = await aiService.sakuvoice(textResponse, userId);
 
     return res.status(200).json({
       status: 'success',
