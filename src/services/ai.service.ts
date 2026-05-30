@@ -146,7 +146,7 @@ export class AIService {
     );
   }
 
-  async processAudioToText(audioBuffer: Buffer): Promise<string> {
+  async processAudioToText(audioBuffer: Buffer, mimeType: string): Promise<string> {
     const model = this.getModel(process.env.SAKUVOICE_GEMINI_KEY!);
   
     const prompt = "Tolong convert audio berikut ke dalam teks lengkap dan akurat. Response nya adalah langsung hasil Speech-to-Text nya";
@@ -156,7 +156,7 @@ export class AIService {
       {
         inlineData: {
           data: audioBuffer.toString("base64"),
-          mimeType: "audio/mp3"
+          mimeType: mimeType
         }
       }
     ]);

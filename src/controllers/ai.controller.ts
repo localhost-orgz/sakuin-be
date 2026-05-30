@@ -45,7 +45,8 @@ export const sakuvoice = async (req: Request, res: Response) => {
       return res.status(401).json({ status: 'error', message: 'Unauthorized' });
     }
 
-    const textResponse = await aiService.processAudioToText(req.file.buffer);
+    const { buffer, mimetype } = req.file;
+    const textResponse = await aiService.processAudioToText(buffer, mimetype);
 
     const data = await aiService.sakuvoice(textResponse, userId);
 
