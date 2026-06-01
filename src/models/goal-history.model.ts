@@ -3,8 +3,9 @@ import { model, Schema, type HydratedDocument, type InferSchemaType } from 'mong
 const schema = new Schema({
   goal_id: { type: Schema.Types.ObjectId, ref: 'Goal', required: true },
   user_id: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  amount: { type: Number, required: true }, // Jumlah uang yang dimasukkan/dikurangi
-  type: { type: String, enum: ['saving', 'withdraw'], required: true }, // Jenis aktivitas
+  amount: { type: Number, required: true },
+  type: { type: String, enum: ['saving', 'withdraw'], required: true },
+  date: { type: Date, required: true },
 });
 
 export type GoalHistory = InferSchemaType<typeof schema>;
