@@ -1,27 +1,36 @@
 import { GoalHistoryModel, type GoalHistory } from '../models/goal-history.model.js';
 
 export class GoalHistoryRepository {
-  // Mencari semua history berdasarkan user tertentu
   async findAllByUserId(userId: string) {
     return await GoalHistoryModel.find({ user_id: userId })
-      .populate('goal_id', 'name emoticon') // Menampilkan info nama & icon goal terkait
+      .populate('goal_id', 'name emoticon')
       .sort({ createdAt: -1 })
       .lean();
   }
 
-  // Mencari semua history khusus untuk satu goal tertentu
+  // Tambahan untuk detail Read
+  async findById(historyId: string) {
+    return await GoalHistoryModel.findById(historyId).lean();
+  }
+
   async findAllByGoalId(goalId: string) {
     return await GoalHistoryModel.find({ goal_id: goalId })
       .sort({ createdAt: -1 })
       .lean();
   }
 
-  // Membuat log riwayat baru
-  async create(data: GoalHistory) {
+  // Menggunakan tipe data 'any' atau any yang valid karena 'amount' sudah ditransformasi dari string ke number oleh Zod
+  async create(data: any) {
     return await GoalHistoryModel.create(data);
   }
 
-  // Menghapus riwayat jika diperlukan
+  // Tambahan untuk Update
+  async update(historyId: string, data: any) {
+    return await GoalHistoryModel.findOneAndUpdate({ _id: historyId }, data, {
+      new: true, // Mengembalikan data yang sudah diperbarui
+    }).lean();
+  }
+
   async delete(historyId: string) {
     return await GoalHistoryModel.findOneAndDelete({ _id: historyId });
   }
