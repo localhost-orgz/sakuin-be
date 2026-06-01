@@ -2,7 +2,7 @@ import z from 'zod';
 
 export const createGoalHistorySchema = z.object({
   goal_id: z.string(),
-  amount: z.number().positive('Jumlah harus lebih besar dari 0'),
+  amount: z.string(),
   type: z.enum(['saving', 'withdraw']),
   date: z.coerce.date(),
 });
