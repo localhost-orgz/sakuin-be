@@ -6,7 +6,7 @@ const schema = new Schema({
   currency_id: { type: Schema.Types.ObjectId, ref: 'Currency', required: true },
   wallet_id: { type: String, required: true, unique: true, index: true },
   name: { type: String, required: true },
-  color: { type: String, required: true },
+  color: { type: String, required: false },
   balance: { type: Number, required: true, default: 0 },
 });
 

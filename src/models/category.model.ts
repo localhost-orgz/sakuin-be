@@ -4,7 +4,7 @@ const schema = new Schema({
   name: { type: String, required: true },
   slug: { type: String, required: true, unique: true },
   emoticon: { type: String, required: false, default: null },
-  color: { type: String, required: true },
+  color: { type: String, required: false },
   user_id: { type: Schema.Types.ObjectId, ref: 'User', required: false, default: null },
 });
 

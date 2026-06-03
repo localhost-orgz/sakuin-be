@@ -4,7 +4,7 @@ export const createGoalSchema = z.object({
   name: z.string(),
   emoticon: z.string(),
   target_amount: z.number(),
-  color: z.string(),
+  color: z.string().optional(),
 });
 
 export const updateGoalSchema = createGoalSchema.partial();

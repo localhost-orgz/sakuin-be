@@ -2,7 +2,7 @@ import z from 'zod';
 
 export const createWalletSchema = z.object({
   name: z.string(),
-  color: z.string(),
+  color: z.string().optional(),
   balance: z.number().default(0),
   currency_id: z.string(),
 });

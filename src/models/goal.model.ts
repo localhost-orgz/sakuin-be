@@ -5,7 +5,7 @@ const schema = new Schema({
   name: { type: String, required: true },
   emoticon: { type: String, required: true },
   target_amount: { type: Number, required: true },
-  color: { type: String, required: true },
+  color: { type: String, required: false },
 });
 
 export type Goal = InferSchemaType<typeof schema>;
